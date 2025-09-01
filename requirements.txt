@@ -1,0 +1,8 @@
+streamlit>=1.36
+tensorflow==2.16.1
+numpy>=1.26,<2
+pillow>=10.0
+h5py>=3.10
+protobuf<5
+python-3.12
+tensorflow==2.17.1
