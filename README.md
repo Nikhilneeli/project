@@ -1,0 +1,2 @@
+# project
+crop disease prediction
