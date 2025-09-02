@@ -73,14 +73,7 @@ def mobmodel_prediction(test_image):
     prediction = model.predict(input_arr)
     result_index = np.argmax(prediction)
     return result_index
-def resmodel_prediction(test_image):
-    model = tf.keras.models.load_model('ResNet50.keras')
-    image = tf.keras.preprocessing.image.load_img(test_image, target_size=(128,128))
-    input_arr = tf.keras.preprocessing.image.img_to_array(image)
-    input_arr = np.array([input_arr])
-    prediction = model.predict(input_arr)
-    result_index = np.argmax(prediction)
-    return result_index
+
 # sidebar
 st.sidebar.title('DashBoard')
 app_mode = st.sidebar.selectbox("select Page", ["Home","About","BaseLine CNN","MobileNetV2","ResNet50"])
@@ -227,7 +220,7 @@ elif app_mode == "ResNet50":
 
         # measure time
         start = time.time()
-        result_index = resmodel_prediction(test_image)
+        result_index = resnet50_tflite_predict(test_image))
         end = time.time()
         elapsed = end - start
         st.caption(f"Inference time: {elapsed*1000:.1f} ms")
