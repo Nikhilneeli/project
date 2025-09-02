@@ -220,7 +220,7 @@ elif app_mode == "ResNet50":
 
         # measure time
         start = time.time()
-        result_index = resnet50_tflite_predict(test_image))
+        result_index = resnet50_tflite_predict(test_image)
         end = time.time()
         elapsed = end - start
         st.caption(f"Inference time: {elapsed*1000:.1f} ms")
