@@ -3,7 +3,47 @@ import streamlit as st
 
 import tensorflow as tf
 import numpy as np
-   # <-- you forgot this
+# ---- TFLite ResNet50 path (rename if your file is elsewhere) ----
+RESNET_TFLITE_PATH = "ResNet50_int8_dynamic.tflite"  # e.g. "models/ResNet50_int8_dynamic.tflite"
+
+@st.cache_resource
+def load_resnet50_tflite():
+    interpreter = tf.lite.Interpreter(model_path=RESNET_TFLITE_PATH)
+    interpreter.allocate_tensors()
+    return interpreter
+
+def resnet50_tflite_predict(test_image):
+    import numpy as np
+    interpreter = load_resnet50_tflite()
+    in_info  = interpreter.get_input_details()[0]
+    out_info = interpreter.get_output_details()[0]
+
+    if hasattr(test_image, "seek"):
+        test_image.seek(0)
+    img = tf.keras.preprocessing.image.load_img(test_image, target_size=(128, 128))
+    x = tf.keras.preprocessing.image.img_to_array(img)[None, ...]  # (1,128,128,3)
+
+    # match input dtype (dynamic-range = float32; full-int8 = int8/uint8)
+    x = x.astype(in_info["dtype"])
+    scale, zp = in_info["quantization"]
+    if in_info["dtype"] == np.uint8 and scale > 0:
+        x = (x/scale + zp).round().clip(0,255).astype(np.uint8)
+    elif in_info["dtype"] == np.int8 and scale > 0:
+        x = (x/scale + zp).round().clip(-128,127).astype(np.int8)
+
+    interpreter.set_tensor(in_info["index"], x)
+    interpreter.invoke()
+    y = interpreter.get_tensor(out_info["index"])
+
+    # dequantize output if needed
+    scale_o, zp_o = out_info["quantization"]
+    if out_info["dtype"] == np.uint8 and scale_o > 0:
+        y = (y.astype(np.float32) - zp_o) * scale_o
+    elif out_info["dtype"] == np.int8 and scale_o > 0:
+        y = (y.astype(np.float32) - zp_o) * scale_o
+
+    return int(np.argmax(y))
+
 class_name = [
             'Apple___Apple_scab','Apple___Black_rot','Apple___Cedar_apple_rust','Apple___healthy',
             'Background_without_leaves','Blueberry___healthy','Cherry___Powdery_mildew','Cherry___healthy',
