@@ -1,8 +1,10 @@
-streamlit>=1.36
-tensorflow==2.17.1
-numpy>=1.26,<2
-pillow>=10.0
-h5py>=3.10
-protobuf<5
+streamlit==1.37.1
+tensorflow==2.17.1          # CPU build; works on Streamlit Cloud Linux
+numpy==1.26.4               # safe with TF 2.17 on manylinux
+Pillow==10.4.0              # for image loading (PIL)
+h5py==3.11.0                # harmless; helps if any HDF5 models are used
+protobuf<5                  # avoids rare protobuf conflicts
+
+
 
 
