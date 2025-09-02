@@ -4,7 +4,7 @@ import streamlit as st
 import tensorflow as tf
 import numpy as np
 # ---- TFLite ResNet50 path (rename if your file is elsewhere) ----
-RESNET_TFLITE_PATH = "ResNet50_int8_dynamic.tflite"  # e.g. "models/ResNet50_int8_dynamic.tflite"
+RESNET_TFLITE_PATH = "ResNet50_int8_dynamic (1).tflite"  # e.g. "models/ResNet50_int8_dynamic.tflite"
 
 @st.cache_resource
 def load_resnet50_tflite():
