@@ -1,13 +1,8 @@
 streamlit>=1.36
-tensorflow==2.16.1
+tensorflow==2.17.1
 numpy>=1.26,<2
 pillow>=10.0
 h5py>=3.10
 protobuf<5
-python-3.12
-tensorflow==2.17.1
-streamlit==1.37.1      # or newer
-tensorflow==2.17.1     # Linux CPU wheel; works with Python 3.9–3.11
-numpy
-pillow
+
 
