@@ -4,23 +4,6 @@ import streamlit as st
 import tensorflow as tf
 import numpy as np
 
-RESNET_TFLITE_PATH = "ResNet50_int8_dynamic (1).tflite"  
-
-@st.cache_resource
-def load_resnet50_tflite():
-    interpreter = tf.lite.Interpreter(model_path=RESNET_TFLITE_PATH)
-    interpreter.allocate_tensors()
-    return interpreter
-
-def resnet50_tflite_predict(test_image):
-    import numpy as np
-    interpreter = load_resnet50_tflite()
-    in_info  = interpreter.get_input_details()[0]
-    out_info = interpreter.get_output_details()[0]
-
-
-
-    return int(np.argmax(y))
 
 class_name = [
             'Apple___Apple_scab','Apple___Black_rot','Apple___Cedar_apple_rust','Apple___healthy',
@@ -51,7 +34,14 @@ def mobmodel_prediction(test_image):
     prediction = model.predict(input_arr)
     result_index = np.argmax(prediction)
     return result_index
-
+def resmodel_prediction(test_image):
+    model = tf.keras.models.load_model('ResNet50.keras')
+    image = tf.keras.preprocessing.image.load_img(test_image, target_size=(128,128))
+    input_arr = tf.keras.preprocessing.image.img_to_array(image)
+    input_arr = np.array([input_arr])
+    prediction = model.predict(input_arr)
+    result_index = np.argmax(prediction)
+    return result_index
 # sidebar
 st.sidebar.title('DashBoard')
 app_mode = st.sidebar.selectbox("select Page", ["Home","About","BaseLine CNN","MobileNetV2","ResNet50"])
