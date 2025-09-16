@@ -3,7 +3,7 @@ import streamlit as st
 
 import tensorflow as tf
 import numpy as np
-   # <-- you forgot this
+   
 class_name = [
             'Apple___Apple_scab','Apple___Black_rot','Apple___Cedar_apple_rust','Apple___healthy',
             'Background_without_leaves','Blueberry___healthy','Cherry___Powdery_mildew','Cherry___healthy',
@@ -181,7 +181,7 @@ elif app_mode == "ResNet50":
         if test_image is None:
             st.warning("Please upload an image first.")
             st.stop()
-        if hasattr(test_image, "seek"):  # <--- add this
+        if hasattr(test_image, "seek"):  
             test_image.seek(0)
         st.write("CNN Prediction")
 
